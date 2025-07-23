@@ -1,57 +1,79 @@
+// server.js
 import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
 import { ApolloServer } from "@apollo/server";
-console.log(Object.keys(apollo));
-import { expressMiddleware } from "@apollo/server/express4"; // correct import for Apollo Server v5 + Express 4
-import bodyParser from "body-parser";
-import exphbs from "express-handlebars";
+import { create } from "express-handlebars"; // updated import for v8+
 
 import typeDefs from "./apollo/typeDefs.js";
-import resolvers from "./apollo/resolvers.js";
-
-import apiRoutes from "./routes/apiRoutes.js";
-import htmlRoutes from "./routes/htmlRoutes.js";
+import resolvers from "./apollo/resolvers.js"; // ✅ now imported correctly
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Express middleware for parsing URL-encoded and JSON bodies
+// Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(express.static("public"));
 
-// Handlebars view engine setup
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+// Handlebars setup
+const exphbs = create({ defaultLayout: "main" });
+app.engine("handlebars", exphbs.engine);
 app.set("view engine", "handlebars");
 
-// Register your REST API routes
-apiRoutes(app);
-htmlRoutes(app);
+async function startServer() {
+  // Dynamically import route modules
+  const apiRoutesModule = await import("./routes/apiRoutes.js");
+  const htmlRoutesModule = await import("./routes/htmlRoutes.js");
 
-async function startApolloServer() {
-  // Create Apollo Server instance
+  const apiRoutes = apiRoutesModule.default || apiRoutesModule;
+  const htmlRoutes = htmlRoutesModule.default || htmlRoutesModule;
+
+  // Register routes
+  apiRoutes(app);
+  htmlRoutes(app);
+
+  // Start Apollo Server
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
   });
 
-  // Start Apollo Server
   await apolloServer.start();
 
-  // Mount Apollo Server middleware on /graphql route
-  app.use(
-    "/graphql",
-    bodyParser.json(),
-    expressMiddleware(apolloServer)
-  );
+  // Manual middleware for Apollo Server integration
+  app.use("/graphql", async (req, res) => {
+    try {
+      const response = await apolloServer.executeHTTPGraphQLRequest({
+        httpGraphQLRequest: {
+          body: req.body,
+          headers: req.headers,
+          method: req.method,
+          search: req.url.split("?")[1] || "",
+        },
+        context: async () => ({}),
+      });
 
-  // Start the Express server
+      if ("body" in response) {
+        res.status(response.status ?? 200);
+        for (const [key, value] of response.headers) {
+          res.setHeader(key, value);
+        }
+        res.send(response.body);
+      } else {
+        res.sendStatus(500);
+      }
+    } catch (error) {
+      console.error("GraphQL request error:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  });
+
   app.listen(PORT, () => {
-    console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+    console.log(`🚀 GraphQL ready at http://localhost:${PORT}/graphql`);
+    console.log(`🌐 Site running at http://localhost:${PORT}/`);
   });
 }
 
-// Start everything
-startApolloServer();
+startServer();

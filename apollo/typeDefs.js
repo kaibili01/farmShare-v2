@@ -1,10 +1,14 @@
-const { GraphQLSchema } = require("graphql/");
-const Query = require("./Query");
-const Mutation = require("./Mutation");
+// apollo/typeDefs.js
+import { gql } from "graphql-tag";
 
-const Schema = new GraphQLSchema({
-  query: Query,
-  mutation: Mutation
-});
+const typeDefs = gql`
+  type Query {
+    hello: String
+  }
 
-module.exports = Schema;
+  type Mutation {
+    sayHello(name: String!): String
+  }
+`;
+
+export default typeDefs;

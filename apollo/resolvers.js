@@ -1,4 +1,5 @@
-// graphql/resolvers.js
+// apollo/resolvers.js
+
 const resolvers = {
   Query: {
     hello: () => "Hello from Apollo Server!",
@@ -8,4 +9,4 @@ const resolvers = {
   },
 };
 
-module.exports = resolvers;
+export default resolvers;

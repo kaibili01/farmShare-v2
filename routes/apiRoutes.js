@@ -1,7 +1,7 @@
-import db from "../models/db.js"; // Make sure your db file uses ES exports too
+import db from "../models/db.js"; // Make sure db.js uses ES exports
 
-export default function (app) {
-  // Example: Create a new entry via GraphQL POST (though usually GraphQL doesn't go here)
+export default function apiRoutes(app) {
+  // Create a new entry (adjust based on your actual model and logic)
   app.post("/graphql", (req, res) => {
     db.Example.create(req.body)
       .then((dbExample) => {
@@ -12,7 +12,7 @@ export default function (app) {
       });
   });
 
-  // Uncomment and update if needed:
+  // Optionally enable these endpoints:
   /*
   app.get("/api/examples", (req, res) => {
     db.Example.findAll()

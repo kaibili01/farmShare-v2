@@ -1,44 +1,54 @@
-const Schema = require("../graphql/Schema");
-const db = require("../models/db");
-const { graphql } = require("graphql");
-require("dotenv").config();
-module.exports = app => {
+import Schema from "../graphql/Schema.js";
+import db from "../models/db.js";
+import { graphql } from "graphql";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export default function htmlRoutes(app) {
   // Load index page
   app.get("/", (req, res) => {
     res.render("index", {
       msg: "Welcome!"
     });
   });
+
   app.get("/register", (req, res) => {
     res.render("register", {
       layout: "register-layout"
     });
   });
+
   app.get("/login", (req, res) => {
     res.render("login", {
       layout: "login-layout"
     });
   });
+
   app.get("/newpost", (req, res) => {
     res.render("new-post", {
       layout: "new-post-layout"
     });
   });
+
   app.get("/search", (req, res) => {
     res.render("search", {
       layout: "search-layout"
     });
   });
+
   app.get("/calendar", (req, res) => {
     res.render("my-calendar", {
       layout: "my-calendar-layout"
     });
   });
+
   app.get("/home", (req, res) => {
     res.render("navigation", {
       layout: "navigation-layout"
     });
   });
+
   app.get("/feed", (req, res) => {
     graphql(
       Schema,
@@ -110,4 +120,4 @@ module.exports = app => {
   app.get("*", (req, res) => {
     res.render("404");
   });
-};
+}

@@ -14,14 +14,24 @@ const env = process.env.NODE_ENV || "development";
 
 // Load config.json based on current environment
 const configPath = path.resolve(__dirname, "../config/config.json");
-const config = JSON.parse(fs.readFileSync(configPath))[env];
+const configFile = JSON.parse(fs.readFileSync(configPath))[env];
 
-// Initialize db and Sequelize
+// Compose config with priority: environment variables > config file
+const config = {
+  username: process.env.DB_USER || configFile.username,
+  password: process.env.DB_PASSWORD || configFile.password,
+  database: process.env.DB_NAME || configFile.database,
+  host: process.env.DB_HOST || configFile.host,
+  dialect: configFile.dialect,
+  logging: configFile.logging || false,
+  // add other config options as needed
+};
+
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+if (configFile.use_env_variable) {
+  sequelize = new Sequelize(process.env[configFile.use_env_variable], config);
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
@@ -47,14 +57,11 @@ for (const modelName of Object.keys(db)) {
   }
 }
 
-// Add Sequelize references to db object
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-// Sync options
 const syncOptions = { force: process.env.NODE_ENV === "test" };
 
-// Sync DB
 await sequelize.sync(syncOptions);
 
 export default db;
