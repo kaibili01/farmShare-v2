@@ -12,8 +12,13 @@ dotenv.config();
 
 const Query = new GraphQLObjectType({
   name: "Query",
-  description: "This is just any ol' query",
+  description: "Root Query",
   fields: () => ({
+    hello: {
+      type: GraphQLString,
+      resolve: () => "Hello from Apollo Server!",
+    },
+
     users: {
       type: new GraphQLList(User),
       args: {
@@ -24,6 +29,7 @@ const Query = new GraphQLObjectType({
         return db.sequelize.models.User.findAll({ where: args });
       },
     },
+
     posts: {
       type: new GraphQLList(Post),
       args: {
@@ -33,17 +39,26 @@ const Query = new GraphQLObjectType({
         return db.sequelize.models.Post.findAll({ where: args });
       },
     },
+
     reservations: {
       type: new GraphQLList(Reservation),
       args: {
         userId: { type: GraphQLString },
       },
       async resolve(root, args) {
-        const decrypted = jwt.verify(args.userId, process.env.APP_SECRET);
-        const reservations = await db.sequelize.models.Reservation.findAll({
+        if (!args.userId) {
+          throw new Error("JWT token is required for reservations query");
+        }
+        let decrypted;
+        try {
+          decrypted = jwt.verify(args.userId, process.env.APP_SECRET);
+        } catch (error) {
+          throw new Error("Invalid or expired JWT token");
+        }
+
+        return db.sequelize.models.Reservation.findAll({
           where: { userId: decrypted.userId },
         });
-        return reservations;
       },
     },
   }),

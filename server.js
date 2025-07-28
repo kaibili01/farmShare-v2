@@ -5,8 +5,7 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { create } from "express-handlebars";
 
-import typeDefs from "./apollo/typeDefs.js";
-import resolvers from "./apollo/resolvers.js";
+import schema from "./graphql/Schema.js"; // <-- Use your combined schema here!
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,10 +31,9 @@ async function startServer() {
   apiRoutes(app);
   htmlRoutes(app);
 
-  // Create Apollo server
+  // Create Apollo server using your schema instead of typeDefs/resolvers
   const apolloServer = new ApolloServer({
-    typeDefs,
-    resolvers,
+    schema,
   });
 
   // Start Apollo server

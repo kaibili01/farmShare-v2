@@ -1,17 +1,22 @@
 import db from "../models/db.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default function apiRoutes(app) {
   // Register a new user
   app.post("/api/register", async (req, res) => {
     try {
-      const { email, username, password } = req.body;
+      const { email, username, password, firstName, lastName } = req.body;
 
       if (!email || !username || !password) {
-        return res.status(400).json({ error: "Email, username, and password are required." });
+        return res.status(400).json({
+          error: "Email, username, and password are required.",
+        });
       }
 
-      // Check if either the email or username is already taken
       const existingUser = await db.User.findOne({
         where: {
           [db.Sequelize.Op.or]: [{ email }, { username }],
@@ -19,7 +24,9 @@ export default function apiRoutes(app) {
       });
 
       if (existingUser) {
-        return res.status(409).json({ error: "User with that email or username already exists." });
+        return res.status(409).json({
+          error: "User with that email or username already exists.",
+        });
       }
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,11 +35,14 @@ export default function apiRoutes(app) {
         email,
         username,
         password: hashedPassword,
-        firstName: "Test",  // You can change this to req.body.firstName if you start collecting it
-        lastName: "User",
+        firstName: firstName || "Test",
+        lastName: lastName || "User",
       });
 
-      res.status(201).json({ message: "User registered", userId: newUser.id });
+      res.status(201).json({
+        message: "User registered successfully",
+        userId: newUser.id,
+      });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -44,10 +54,11 @@ export default function apiRoutes(app) {
       const { email, username, password } = req.body;
 
       if ((!email && !username) || !password) {
-        return res.status(400).json({ error: "Username or email and password are required." });
+        return res.status(400).json({
+          error: "Username or email and password are required.",
+        });
       }
 
-      // Find by either email or username
       const user = await db.User.findOne({
         where: email ? { email } : { username },
       });
@@ -61,8 +72,15 @@ export default function apiRoutes(app) {
         return res.status(401).json({ error: "Invalid credentials." });
       }
 
+      const token = jwt.sign(
+        { userId: user.id },
+        process.env.APP_SECRET || "defaultsecret",
+        { expiresIn: "1d" }
+      );
+
       res.json({
         message: "Login successful",
+        token,
         user: {
           id: user.id,
           email: user.email,

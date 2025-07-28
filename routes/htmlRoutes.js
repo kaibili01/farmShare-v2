@@ -1,5 +1,5 @@
 import Schema from "../graphql/Schema.js";
-import db from "../models/db.js";
+console.log("Schema import test:", Schema);
 import { graphql } from "graphql";
 import dotenv from "dotenv";
 
@@ -70,15 +70,15 @@ export default function htmlRoutes(app) {
             }
           }
         }
-      `,
-      (root, args) => {
-        return db.sequelize.models.Post.findAll({ where: args });
-      }
+      `
     ).then(response => {
       res.render("searchResults", {
         layout: "searchResults-layout",
         posts: response.data.posts
       });
+    }).catch(err => {
+      console.error("GraphQL error on /feed:", err);
+      res.status(500).send("Internal Server Error");
     });
   });
 
@@ -103,16 +103,16 @@ export default function htmlRoutes(app) {
             }
           }
         }
-      `,
-      (root, args) => {
-        return db.sequelize.models.Post.findAll({ where: args });
-      }
+      `
     ).then(response => {
       res.render("searchMaps", {
         layout: "searchMaps-layout",
         posts: response.data.posts,
         googleKey: process.env.GOOGLE_API_KEY
       });
+    }).catch(err => {
+      console.error("GraphQL error on /maps:", err);
+      res.status(500).send("Internal Server Error");
     });
   });
 
