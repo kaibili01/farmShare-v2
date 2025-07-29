@@ -1,56 +1,36 @@
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <h1 class="headerText text-center">
-        Welcome Back!
-      </h1>
-    </div>
-  </div>
-  <div class="row logInInput">
-    <div class="col-10 offset-1">
-      <div class="row">
-        <div class="col">
-          <div class="input-group mb-3">
-            <input id="user-entry" type="text" class="form-control" placeholder="User Name" aria-label="email"
-              aria-describedby="basic-addon1">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <div class="input-group mb-3">
-            <input id="password-entry" type="password" class="form-control" placeholder="Password"
-              aria-label="firstName" aria-describedby="basic-addon1">
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-end">
-        <div class="col-5">
-          <a href="/">
-            <button id="home-button" type="button" class="text-center btn btn-danger">Home</button>
-          </a>
-        </div>
-        <div class="col-4">
-          <button id="login-btn" type="button" class="text-center btn btn-primary">Log In</button>
-        </div>
-      </div>
-    </div>
+<div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 90vh;">
+  <div class="text-center mb-4">
+    <h1 class="display-4">Welcome Back!</h1>
   </div>
 
-  <div class="row pwFooter">
-    <div class="col-6 offset-3">
-      <p class="forgotPW  text-center">No account? No problem! <a href="/register">Register here</a>.</p>
+  <div class="col-md-6">
+    <form>
+      <div class="form-group">
+        <label for="user-entry">Username</label>
+        <input id="user-entry" type="text" class="form-control" placeholder="Enter your username" aria-label="Username">
+      </div>
+
+      <div class="form-group">
+        <label for="password-entry">Password</label>
+        <input id="password-entry" type="password" class="form-control" placeholder="Enter your password" aria-label="Password">
+      </div>
+
+      <div class="d-flex justify-content-between mt-4">
+        <a href="/" class="btn btn-danger">Home</a>
+        <button id="login-btn" type="button" class="btn btn-primary">Log In</button>
+      </div>
+    </form>
+
+    <div class="text-center mt-4">
+      <p class="mb-1">No account? <a href="/register">Register here</a>.</p>
+      <p class="mb-0">Forgot your password? <a href="#">Click here.</a></p>
     </div>
-  </div>
-  <div class="row footer">
-    <div class="col-12">
-      <p class="forgotPW">Forgot your password? Click <a href="#">here.</a></p>
-      <p class="text-center">Copyright 2019</a></p>
-    </div>
+
+    <footer class="text-center mt-4">
+      <small class="text-muted">© 2019 farmShare</small>
+    </footer>
   </div>
 </div>
-
-
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"

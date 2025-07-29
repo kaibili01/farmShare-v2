@@ -1,106 +1,95 @@
-<div class="container container1">
-  <div class="row">
-    <div class="col">
-      <a href="/home">
-        <h1 class="headerText text-center">
-          farmShare
-        </h1>
+<div class="container py-5 container1">
+  <!-- Header -->
+  <div class="row mb-3">
+    <div class="col text-center">
+      <a href="/home" class="text-decoration-none">
+        <h1 class="headerText">farmShare</h1>
       </a>
+      <h5 class="subHeader">Add your tree to the schedule</h5>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <h5 class="subHeader text-center">
-        Add your tree to the schedule
-      </h5>
-    </div>
-  </div>
-  <div class="container-fluid container2">
-    <div class="row justify-content-between">
-      <div class="col-6">
-        <div class="input-group mb-3">
-          <input id="quantity" type="number" class="form-control" placeholder="Qty" aria-label="Username"
-            aria-describedby="basic-addon1">
-        </div>
-      </div>
-      <div class="col-6">
-        <input id="title" type="text" class="form-control" placeholder="Type of Tree" aria-label="Username"
-          aria-describedby="basic-addon1">
-      </div>
-    </div>
-    <div class="row">
+
+  <!-- Form Start -->
+  <form id="tree-form">
+    <!-- Quantity & Tree Type -->
+    <div class="form-row mb-3">
       <div class="col">
-        <div class="input-group mb-3">
-          <input id="address" type="text" class="form-control" placeholder="Address" aria-label="Username"
-            aria-describedby="basic-addon1">
-        </div>
+        <label for="quantity">Quantity</label>
+        <input id="quantity" type="number" class="form-control" placeholder="Qty">
+      </div>
+      <div class="col">
+        <label for="title">Type of Tree</label>
+        <input id="title" type="text" class="form-control" placeholder="E.g. Lemon, Fig">
       </div>
     </div>
-    <div class="row justify-content-between">
+
+    <!-- Address -->
+    <div class="form-group mb-3">
+      <label for="address">Address</label>
+      <input id="address" type="text" class="form-control" placeholder="Street Address">
+    </div>
+
+    <!-- City & State Dropdown -->
+    <div class="form-row mb-3">
       <div class="col-8">
-        <input id="city" type="text" class="form-control" placeholder="City" aria-label="Username"
-          aria-describedby="basic-addon1">
+        <label for="city">City</label>
+        <input id="city" type="text" class="form-control" placeholder="City">
       </div>
       <div class="col-4">
+        <label for="dDownBtn">State</label>
         <div class="dropdown">
-          <button id="dDownBtn" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
-            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
+          <button id="dDownBtn" class="btn btn-secondary dropdown-toggle w-100" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select State
           </button>
-          <div id="dDownMenu" class="dropdown-menu" aria-labelledby="dropdownMenu2">
-
+          <div id="dDownMenu" class="dropdown-menu w-100" aria-labelledby="dDownBtn">
+            <!-- Dynamically filled -->
           </div>
         </div>
       </div>
     </div>
-    <br>
-    <div class="row">
-      <div class="col-4">
-        <input id="date" type="date" class="form-control" placeholder="" aria-label="Username"
-          aria-describedby="basic-addon1">
-        <p class="text-center">Date </p>
-      </div>
-      <div class="col-4">
-        <input id="start-time" type="time" class="form-control" placeholder="" aria-label="Username"
-          aria-describedby="basic-addon1">
-        <p class="text-center">Start Time</p>
-      </div>
-      <div class="col-4">
-        <input id="end-time" type="time" class="form-control" placeholder="" aria-label="Username"
-          aria-describedby="basic-addon1">
-        <p class="text-center">End Time</p>
-      </div>
-    </div>
-    <div class="row">
+
+    <!-- Date and Time -->
+    <div class="form-row text-center mb-3">
       <div class="col">
-        <div class="input-group mb-3">
-          <input id="instructions" type="text" class="form-control" placeholder="" aria-label="Username"
-            aria-describedby="basic-addon1">
-        </div>
-        <p class="text-left">Instructions for Harvester</p>
+        <label for="date">Date</label>
+        <input id="date" type="date" class="form-control">
+      </div>
+      <div class="col">
+        <label for="start-time">Start Time</label>
+        <input id="start-time" type="time" class="form-control">
+      </div>
+      <div class="col">
+        <label for="end-time">End Time</label>
+        <input id="end-time" type="time" class="form-control">
       </div>
     </div>
-    <div class="row justify-content-between">
+
+    <!-- Instructions -->
+    <div class="form-group mb-4">
+      <label for="instructions">Instructions for Harvester</label>
+      <input id="instructions" type="text" class="form-control" placeholder="Optional details, e.g. gate code, etc.">
+    </div>
+
+    <!-- Buttons -->
+    <div class="form-row justify-content-between">
       <div class="col-4">
-        <a href="/home">
-          <button id="back-btn" type="button" class="registerButton text-center btn btn-danger">Back to Nav</button>
-        </a>
+        <a href="/home" class="btn btn-danger btn-block">Back to Nav</a>
       </div>
       <div class="col-4">
-        <button id="submit-btn" type="button" class="registerButton text-center btn btn-primary">Submit</button>
+        <button id="submit-btn" type="button" class="btn btn-primary btn-block">Submit</button>
       </div>
+    </div>
+  </form>
+
+  <!-- Footer -->
+  <div class="row footer mt-5">
+    <div class="col text-center">
+      <p>&copy; 2019 farmShare</p>
     </div>
   </div>
 </div>
-<div class="row footer">
-  <div class="col-12">
-    <p class="text-center">Copyright 2019</a></p>
-  </div>
-</div>
-</div>
 
-
-
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
   integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

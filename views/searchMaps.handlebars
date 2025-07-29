@@ -1,63 +1,61 @@
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h1 class="headerText text-center">
-                Farm Share!
-            </h1>
-        </div>
+<div class="container py-4">
+  <div class="row mb-3">
+    <div class="col text-center">
+      <h1 class="headerText">Farm Share!</h1>
+      <h3 class="subHeader">Who's giving fruit away?</h3>
     </div>
-    <div class="row">
-        <div class="col">
-            <h3 class="subHeader text-center">
-                Who's giving fruit away?
-            </h3>
-        </div>
-    </div>
-    <br>
-    <br>
-    <div id="floating-panel">
-        <strong>Start:</strong>
-        <input id="start" class="controls" type="text" placeholder="Your Address">
-        <br>
-        <strong>End:</strong>
-        <select id="end">
-            {{#each posts}}
-            <option value="{{this.address}}, {{this.city}}, {{this.state}}">{{this.address}}, {{this.city}},
-                {{this.state}}</option>
-            {{/each}}
-        </select>
-    </div>
+  </div>
 
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <div id="map"></div>
-    <div id="right-panel"></div>
-    <div class="row justify-content-center">
-        <div class="col-4 text-center">
-            <a href="/feed">
-                <button type="button" class="btn btn-success">Back to Available Posts</button>
-            </a>
-        </div>
+  <form id="route-form" class="mb-4">
+    <div id="floating-panel" class="mb-3">
+      <label for="start" class="sr-only">Starting Address</label>
+      <strong>Start:</strong>
+      <input id="start" class="controls form-control mb-2" type="text" placeholder="Your Address" aria-describedby="start-help">
+      <small id="start-help" class="form-text text-muted">Enter your starting address.</small>
+
+      <label for="end" class="sr-only">Destination Address</label>
+      <strong>End:</strong>
+      <select id="end" class="form-control">
+        {{#each posts}}
+          <option value="{{this.address}}, {{this.city}}, {{this.state}}">
+            {{this.address}}, {{this.city}}, {{this.state}}
+          </option>
+        {{/each}}
+      </select>
     </div>
-    <footer>
-        <div class="row footer">
-            <div class="col-12">
-                <a>
-                    <p class="text-center">Copyright 2019 </p>
-                </a>
-            </div>
-        </div>
-    </footer>
+  </form>
+
+  <label for="pac-input" class="sr-only">Search Box</label>
+  <input id="pac-input" class="controls form-control mb-3" type="text" placeholder="Search Box" aria-label="Search location">
+
+  <div id="map" style="height: 400px;"></div>
+  <div id="right-panel" class="mt-3"></div>
+
+  <div class="row justify-content-center mt-4">
+    <div class="col-4 text-center">
+      <a href="/feed" class="btn btn-success btn-block" role="button" aria-label="Back to Available Posts">
+        Back to Available Posts
+      </a>
+    </div>
+  </div>
 </div>
 
+<footer>
+  <div class="row footer mt-5">
+    <div class="col text-center">
+      <p>&copy; 2019 farmShare</p>
+    </div>
+  </div>
+</footer>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-    <script src="/js/searchMaps.js" async defer></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{googleKey}}&libraries=places&callback=initMap"></script>
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"></script>
 
+<script src="/js/searchMaps.js" async defer></script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key={{googleKey}}&libraries=places&callback=initMap"></script>

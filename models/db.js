@@ -24,7 +24,6 @@ const config = {
   host: process.env.DB_HOST || configFile.host,
   dialect: configFile.dialect,
   logging: configFile.logging || false,
-  // add other config options as needed
 };
 
 const db = {};
@@ -45,9 +44,22 @@ const modelFiles = fs.readdirSync(__dirname).filter(
 );
 
 for (const file of modelFiles) {
-  const { default: modelDefiner } = await import(path.join(__dirname, file));
-  const model = modelDefiner(sequelize, Sequelize.DataTypes);
-  db[model.name] = model;
+  try {
+    console.log(`📦 Loading model file: ${file}`);
+    const module = await import(path.join(__dirname, file));
+    const modelDefiner = module.default;
+
+    if (typeof modelDefiner !== "function") {
+      console.error(`❌ Skipped ${file}: Not a valid model function.`);
+      continue;
+    }
+
+    const model = modelDefiner(sequelize, Sequelize.DataTypes);
+    db[model.name] = model;
+    console.log(`✅ Registered model: ${model.name}`);
+  } catch (err) {
+    console.error(`❌ Failed to load model ${file}:`, err.message);
+  }
 }
 
 // Apply model associations

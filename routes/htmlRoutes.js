@@ -1,54 +1,60 @@
 import Schema from "../graphql/Schema.js";
-console.log("Schema import test:", Schema);
 import { graphql } from "graphql";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 export default function htmlRoutes(app) {
-  // Load index page
+  // Root page
   app.get("/", (req, res) => {
     res.render("index", {
       msg: "Welcome!"
     });
   });
 
+  // Registration page
   app.get("/register", (req, res) => {
     res.render("register", {
       layout: "register-layout"
     });
   });
 
+  // Login page
   app.get("/login", (req, res) => {
     res.render("login", {
       layout: "login-layout"
     });
   });
 
+  // New post form
   app.get("/newpost", (req, res) => {
     res.render("new-post", {
       layout: "new-post-layout"
     });
   });
 
+  // Basic search page
   app.get("/search", (req, res) => {
     res.render("search", {
       layout: "search-layout"
     });
   });
 
+  // Calendar view
   app.get("/calendar", (req, res) => {
     res.render("my-calendar", {
       layout: "my-calendar-layout"
     });
   });
 
+  // Homepage navigation
   app.get("/home", (req, res) => {
     res.render("navigation", {
       layout: "navigation-layout"
     });
   });
 
+  // Feed (populated via GraphQL)
   app.get("/feed", (req, res) => {
     graphql(
       Schema,
@@ -82,6 +88,7 @@ export default function htmlRoutes(app) {
     });
   });
 
+  // Map-based search
   app.get("/maps", (req, res) => {
     graphql(
       Schema,
@@ -116,8 +123,8 @@ export default function htmlRoutes(app) {
     });
   });
 
-  // Render 404 page for any unmatched routes
-  app.get("*", (req, res) => {
-    res.render("404");
-  });
+  // You can restore this if you still want a wildcard fallback — just place it LAST.
+  // app.get("*", (req, res) => {
+  //   res.render("404");
+  // });
 }
